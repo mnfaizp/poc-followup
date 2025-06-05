@@ -71,7 +71,7 @@ class AIService:
                     "reason": "Explanation of why this follow-up question is needed"
                 }}
 
-                Make sure the question ends with a question mark and the reason is a clear, concise explanation.
+                Make sure the question ends with a question mark and the reason is a clear, concise explanation. Even no question is generated, please provide a reason.
             """
 
             response = model_with_system.generate_content(content_prompt)

@@ -191,10 +191,12 @@ def manage_prompts_page(db: DatabaseManager):
                     st.write("**AI Configuration:**")
                     col1, col2 = st.columns(2)
                     with col1:
+                        # add gemini-2.5-flash-preview-04-17, gemini-2.5-flash-preview-04-17, gemini-2.5-flash-preview-05-20
+                        options = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.5-flash-preview-04-17", "gemini-2.5-flash-preview-04-17", "gemini-2.5-flash-preview-05-20"]
                         new_model = st.selectbox(
                             "AI Model",
-                            options=["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"],
-                            index=["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"].index(prompt.model) if prompt.model in ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"] else 0,
+                            options=options,
+                            index=options.index(prompt.model) if prompt.model in options else 0,
                             help="Select the AI model to use for this prompt"
                         )
                     with col2:
