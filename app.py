@@ -3,6 +3,9 @@ Streamlit application for managing follow-up questions with multi-user experimen
 """
 import streamlit as st
 import os
+import csv
+import io
+from typing import List
 from dotenv import load_dotenv
 from database import DatabaseManager
 from ai_service import AIService
@@ -606,6 +609,31 @@ def run_experiment(db: DatabaseManager, ai: AIService, experiment: Experiment, p
     # Auto-refresh to show results
     st.rerun()
 
+def generate_csv_data(case_results: List[CaseResult]) -> str:
+    """Generate CSV data from experiment results with semicolon delimiter."""
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+
+    # Write header
+    writer.writerow(['user_name', 'question', 'followup_question', 'reason'])
+
+    # Write data rows
+    for case_result in case_results:
+        user_name = case_result.user.name
+        question = case_result.question.question_text
+
+        # If there are follow-up questions, create a row for each
+        if case_result.followup_questions:
+            for followup in case_result.followup_questions:
+                followup_question = followup.followup_text
+                reason = followup.reason if followup.reason else ""
+                writer.writerow([user_name, question, followup_question, reason])
+        else:
+            # If no follow-up questions, create a row with empty followup fields
+            writer.writerow([user_name, question, "", ""])
+
+    return output.getvalue()
+
 def results_page(db: DatabaseManager):
     """Page for viewing experiment results and follow-up questions."""
     st.header("📊 Results")
@@ -642,6 +670,23 @@ def results_page(db: DatabaseManager):
         st.warning("No results found for this experiment. Please run the experiment first.")
         return
 
+    # Add CSV download button
+    st.subheader("Export Results")
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        if st.button("📥 Download CSV", type="primary"):
+            csv_data = generate_csv_data(case_results)
+            st.download_button(
+                label="💾 Download experiment_results.csv",
+                data=csv_data,
+                file_name=f"experiment_results_{selected_experiment.name.replace(' ', '_')}.csv",
+                mime="text/csv",
+                key="download_csv"
+            )
+    with col2:
+        st.info("Download experiment results in CSV format with semicolon (;) delimiter")
+
+    st.divider()
     st.subheader("Experiment Results")
 
     # Group results by user
