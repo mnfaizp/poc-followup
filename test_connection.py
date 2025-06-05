@@ -12,7 +12,7 @@ def test_environment_variables():
     """Test if all required environment variables are set."""
     print("🔍 Checking environment variables...")
     
-    required_vars = ["SUPABASE_URL", "SUPABASE_KEY", "GEMINI_API_KEY"]
+    required_vars = ["SUPABASE_URL", "SUPABASE_KEY", "GEMINI_API_KEY", "AUTH_USERNAME", "AUTH_PASSWORD"]
     missing_vars = []
     
     for var in required_vars:

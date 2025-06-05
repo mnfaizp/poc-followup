@@ -53,6 +53,8 @@ A Streamlit application for managing follow-up questions with multi-user support
      SUPABASE_URL=your_supabase_project_url
      SUPABASE_KEY=your_supabase_anon_key
      GEMINI_API_KEY=your_gemini_api_key
+     AUTH_USERNAME=admin
+     AUTH_PASSWORD=your_secure_password
      ```
 
 ## Database Setup
@@ -70,6 +72,20 @@ A Streamlit application for managing follow-up questions with multi-user support
    - **Supabase Anon Key**: Found in Project Settings > API
    - **Gemini API Key**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
+## Authentication
+
+The application includes secure authentication to protect access:
+
+1. **Set up authentication credentials** in your `.env` file:
+   ```
+   AUTH_USERNAME=admin
+   AUTH_PASSWORD=your_secure_password
+   ```
+
+2. **Login required**: Users must authenticate before accessing any features
+3. **Session management**: Authentication persists during the session
+4. **Logout option**: Available in the sidebar when logged in
+
 ## Usage
 
 1. **Start the application**:
@@ -77,7 +93,9 @@ A Streamlit application for managing follow-up questions with multi-user support
    streamlit run app.py
    ```
 
-2. **Navigate through the application using sidebar buttons**:
+2. **Login**: Enter your username and password on the login screen
+
+3. **Navigate through the application using sidebar buttons**:
    - **📝 Manage Prompts**: Create and edit reusable prompts that serve as AI system instructions
    - **❓ Manage Questions**: Add questions to prompts (no answers here)
    - **👥 Manage Users**: Create and manage users who will provide answers
@@ -109,6 +127,7 @@ A Streamlit application for managing follow-up questions with multi-user support
 
 ```
 ├── app.py                 # Main Streamlit application with multi-user interface
+├── auth.py               # Authentication module for secure access
 ├── database.py           # Supabase database operations with new multi-user methods
 ├── ai_service.py         # Google Gemini AI integration with system instructions
 ├── models.py             # Data models including User, Experiment, ExperimentCase
@@ -134,15 +153,20 @@ The application uses the following main tables:
 
 ### Common Issues
 
-1. **"GEMINI_API_KEY not found"**:
+1. **Authentication errors**:
+   - Ensure AUTH_USERNAME and AUTH_PASSWORD are set in your `.env` file
+   - Check that credentials match exactly (case-sensitive)
+   - Restart the application after changing authentication settings
+
+2. **"GEMINI_API_KEY not found"**:
    - Ensure your `.env` file exists and contains the correct API key
    - Restart the Streamlit application after adding environment variables
 
-2. **Database connection errors**:
+3. **Database connection errors**:
    - Verify your Supabase URL and key are correct
    - Ensure the database schema has been properly set up
 
-3. **AI generation fails**:
+4. **AI generation fails**:
    - Check your Gemini API key is valid and has quota remaining
    - Ensure you have internet connectivity
 

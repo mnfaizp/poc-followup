@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from database import DatabaseManager
 from ai_service import AIService
 from models import Prompt, Question, Answer, User, Experiment, ExperimentCase, CaseResult
+from auth import require_authentication, show_logout_button
 
 # Load environment variables
 load_dotenv()
@@ -61,6 +62,11 @@ def create_default_users(db: DatabaseManager):
 
 def main():
     """Main application function."""
+    # Check authentication first
+    auth_manager = require_authentication()
+    if auth_manager is None:
+        return  # User is not authenticated, login page is shown
+
     st.title("❓ Multi-User Follow-up Questions Manager")
     st.markdown("Create prompts, manage users, collect answers, and run experiments with AI-powered follow-up questions.")
 
@@ -75,6 +81,9 @@ def main():
     # Sidebar for navigation with buttons instead of dropdown
     st.sidebar.title("🧭 Navigation")
     st.sidebar.markdown("---")
+
+    # Show logout button
+    show_logout_button()
 
     # Initialize session state for page navigation
     if 'current_page' not in st.session_state:
