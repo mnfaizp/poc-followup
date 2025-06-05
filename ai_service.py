@@ -48,7 +48,7 @@ class AIService:
             # Create model with system instruction and generation config
             generation_config = genai.types.GenerationConfig(
                 temperature=temp,
-                max_output_tokens=1000,
+                response_mime_type="application/json"
             )
 
             model_with_system = genai.GenerativeModel(
@@ -61,17 +61,13 @@ class AIService:
             content_prompt = f"""
                 Original Question: {question}
 
-                User's Answer: {answer}
-
-                Please generate exactly 1 thoughtful follow-up question based on the user's answer above, along with a clear reason explaining why this follow-up question is needed.
-
+                User's Answer: {answer} 
+                
                 Format your response as a JSON object with exactly these two fields:
                 {{
                     "question": "Your follow-up question here?",
                     "reason": "Explanation of why this follow-up question is needed"
                 }}
-
-                Make sure the question ends with a question mark and the reason is a clear, concise explanation. Even no question is generated, please provide a reason.
             """
 
             response = model_with_system.generate_content(content_prompt)
