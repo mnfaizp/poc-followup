@@ -1,0 +1,31 @@
+# gitignore for Python projects
+
+# Ignore venv directory
+venv/*
+
+# Ignore .env file
+.env
+
+# Ignore Streamlit cache directory
+.cache/
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore PyCharm project files
+.idea/
+
+# Ignore Python compiled files
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore coverage reports
+.coverage
+htmlcov/
+
+# Ignore database files
+*.db
